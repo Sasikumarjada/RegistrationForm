@@ -1,56 +1,40 @@
-document.getElementById('registrationForm').addEventListener('submit', function(event) {
+function validateForm(event) {
     event.preventDefault();
-  
-    // Clear previous error messages
-    document.querySelectorAll('.error').forEach(function(errorDiv) {
-      errorDiv.textContent = '';
-    });
-  
-    let isValid = true;
-  
-    // Get form values
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-  
-    // Validate First Name
-    if (firstName === '') {
-      document.getElementById('firstNameError').textContent = 'First name is required.';
-      isValid = false;
+
+    const fullname = document.getElementById('fullname').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    const message = document.getElementById('message');
+
+    // Basic validation
+    if (fullname.length < 3) {
+        message.textContent = "Full name must be at least 3 characters long!";
+        message.style.color = "#ff6b6b";
+        return false;
     }
-  
-    // Validate Last Name
-    if (lastName === '') {
-      document.getElementById('lastNameError').textContent = 'Last name is required.';
-      isValid = false;
+
+    if (!email.includes('@') || !email.includes('.')) {
+        message.textContent = "Please enter a valid email address!";
+        message.style.color = "#ff6b6b";
+        return false;
     }
-  
-    // Validate Email
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (!emailPattern.test(email)) {
-      document.getElementById('emailError').textContent = 'Please enter a valid email address.';
-      isValid = false;
-    }
-  
-    // Validate Password
+
     if (password.length < 6) {
-      document.getElementById('passwordError').textContent = 'Password must be at least 6 characters.';
-      isValid = false;
+        message.textContent = "Password must be at least 6 characters long!";
+        message.style.color = "#ff6b6b";
+        return false;
     }
-  
-    // Validate Phone Number
-    const phonePattern = /^[0-9]{10}$/;
-    if (!phonePattern.test(phone)) {
-      document.getElementById('phoneError').textContent = 'Please enter a valid 10-digit phone number.';
-      isValid = false;
+
+    if (password !== confirmPassword) {
+        message.textContent = "Passwords do not match!";
+        message.style.color = "#ff6b6b";
+        return false;
     }
-  
-    // If form is valid, show success message
-    if (isValid) {
-      document.getElementById('formSuccess').textContent = 'Registration Successful!';
-      document.getElementById('registrationForm').reset();
-    }
-  });
-  
+
+    // Success message
+    message.textContent = "Registration successful! Welcome, " + fullname + "!";
+    message.style.color = "#4ecdc4";
+    document.getElementById('registrationForm').reset();
+    return true;
+}
